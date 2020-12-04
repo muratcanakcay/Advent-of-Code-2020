@@ -12,22 +12,19 @@ namespace Day04
     {
         static void Main(string[] args)
         {
-            int passNo = 1;
+            
             List<Passport> passports = new List<Passport>();
             string[] lines = System.IO.File.ReadAllLines(@"C:\CodeBase\VS19\AdventOfCode2020\Day04\data.txt"); // ***** change this to the location of data.txt *****
 
-            Passport p = new Passport(); // template passport to fill
-            p.passNo = passNo;
-
+            Passport p = new Passport(); // empty passport to fill
+            
             foreach (var line in lines)
             {                
-                if (line == string.Empty) // empty line means store old passport and create new
+                if (line == string.Empty) // store filled passport and create new empty passport
                 {
                     passports.Add(new Passport(p));
-                    
-                    p.clear();                    
-                    p.passNo = ++passNo;
-                    
+                    p = new Passport();
+            
                     continue;
                 }
 
@@ -40,29 +37,21 @@ namespace Day04
                     switch (fields[0])
                     {
                         case "byr":
-                            p.byr = fields[1];
-                            break;
+                            p.data.byr = fields[1]; break;
                         case "iyr":
-                            p.iyr = fields[1];
-                            break;
+                            p.data.iyr = fields[1]; break;
                         case "eyr":
-                            p.eyr = fields[1];
-                            break;
+                            p.data.eyr = fields[1]; break;
                         case "hgt":
-                            p.hgt = fields[1];
-                            break;
+                            p.data.hgt = fields[1]; break;
                         case "hcl":
-                            p.hcl = fields[1];
-                            break;
+                            p.data.hcl = fields[1]; break;
                         case "ecl":
-                            p.ecl = fields[1];
-                            break;
+                            p.data.ecl = fields[1]; break;
                         case "pid":
-                            p.pid = fields[1];
-                            break;
+                            p.data.pid = fields[1]; break;
                         case "cid":
-                            p.cid = fields[1];
-                            break;
+                            p.data.cid = fields[1]; break;
                     }
                 }
             }
@@ -85,119 +74,85 @@ namespace Day04
             Console.WriteLine($"Part1 : Valid passports: {validpassportspart1}");
             Console.WriteLine($"Part2 : Valid passports: {validpassportspart2}");
         }
-        
+
         public class Passport  // Passport class
         {
-            public int passNo;
-            public string? byr = null; 
-            public string? iyr = null;
-            public string? eyr = null;
-            public string? hgt = null;
-            public string? hcl = null;
-            public string? ecl = null;
-            public string? pid = null;
-            public string? cid = null;
-
-            public Passport() {}
+            public (string? byr, string? iyr, string? eyr, string? hgt, string? hcl, string? ecl, string? pid, string? cid) data = (null, null, null, null, null, null, null, null);
+                
+            public Passport() {} // default constructor 
 
             public Passport(Passport p) // copy constructor
-            {
-                this.passNo = p.passNo;
-                this.byr = p.byr;
-                this.iyr = p.iyr;
-                this.eyr = p.eyr;
-                this.hgt = p.hgt;
-                this.hcl = p.hcl;
-                this.ecl = p.ecl;
-                this.pid = p.pid;
-                this.cid = p.cid;
+            {                
+                this.data = p.data;                
             }
 
             public string isValid() // check validity for part 1
             {
-                if (byr == null || iyr == null || eyr == null || hgt == null || hcl == null || ecl == null || pid == null) return "no";
+                if (data.byr == null || 
+                    data.iyr == null || 
+                    data.eyr == null || 
+                    data.hgt == null || 
+                    data.hcl == null || 
+                    data.ecl == null || 
+                    data.pid == null) return "no";
 
                 return "yes";
             }
 
             public string isValid2() // check validity for part 2
             {
-                if (byr == null || iyr == null || eyr == null || hgt == null || hcl == null || ecl == null || pid == null) return "no";
+                //check nulls
+                if (data.byr == null || 
+                    data.iyr == null || 
+                    data.eyr == null || 
+                    data.hgt == null || 
+                    data.hcl == null || 
+                    data.ecl == null || 
+                    data.pid == null) return "no";
 
-                if (byr.Length != 4 || int.Parse(byr!) < 1920 || int.Parse(byr!) > 2002 ||
-                    iyr.Length != 4 || int.Parse(iyr!) < 2010 || int.Parse(iyr!) > 2020 ||
-                    eyr.Length != 4 || int.Parse(eyr!) < 2020 || int.Parse(eyr!) > 2030)
+                //check byr, iyr, eyr
+                if (data.byr.Length != 4 || int.Parse(data.byr) < 1920 || int.Parse(data.byr) > 2002 ||
+                    data.iyr.Length != 4 || int.Parse(data.iyr) < 2010 || int.Parse(data.iyr) > 2020 ||
+                    data.eyr.Length != 4 || int.Parse(data.eyr) < 2020 || int.Parse(data.eyr) > 2030) return "no";
+                
+                //check hgt
+                if (data.hgt.EndsWith("cm"))
                 {
-                    Console.WriteLine($"byr: {byr}, iyr: {iyr} or eyr: {eyr} failed.");
-                    return "no";
-                }
+                    string[] height = data.hgt.Split('c');
+                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 150 || int.Parse(height[0]) > 193) return "no";
 
-                if (hgt.EndsWith("cm"))
-                {
-                    string[] height = hgt.Split('c');
-                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 150 || int.Parse(height[0]) > 193)
-                    {
-                        Console.WriteLine($"hgt: {hgt} failed.");
-                        return "no";
-                    }
                 }
-                else if (hgt.EndsWith("in"))
+                else if (data.hgt.EndsWith("in"))
                 {
-                    string[] height = hgt.Split('i');
-                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 59 || int.Parse(height[0]) > 76)
-                    {
-                        Console.WriteLine($"hgt: {hgt} failed.");
-                        return "no";
-                    }
+                    string[] height = data.hgt.Split('i');
+                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 59 || int.Parse(height[0]) > 76) return "no";
                 }
-                else
-                {
-                    Console.WriteLine($"hgt: {hgt} failed.");
-                    return "no";
-                }
+                else return "no";
 
-                if (!hcl.StartsWith('#')) return "no";
-                else
-                {
-                    string[] color = hcl.Split('#');
-                    if (color[1].Length != 6 || !Regex.Match(color[1], "^[a-f0-9]*$").Success)
-                    {
-                        Console.WriteLine($"Regex {color[1]} failed.");
-                        return "no";
-                    }
-                }
+                //check hcl
+                if (!data.hcl.StartsWith('#') || 
+                    data.hcl[1..].Length != 6 || 
+                    !Regex.Match(data.hcl[1..], "^[a-f0-9]*$").Success) return "no";
 
-                if (ecl != "amb" && ecl != "blu" && ecl != "brn" && ecl != "gry" && ecl != "grn" && ecl != "hzl" && ecl != "oth")
-                {
-                    Console.WriteLine($"ecl: {ecl} failed."); 
-                    return "no";
-                }
-
-                if (pid.Length != 9 || !pid.All(char.IsDigit))
-                {
-                    Console.WriteLine($"pid: {pid} failed.");
-                    return "no";
-                }
+                //check ecl
+                if (data.ecl != "amb" && 
+                    data.ecl != "blu" && 
+                    data.ecl != "brn" && 
+                    data.ecl != "gry" && 
+                    data.ecl != "grn" && 
+                    data.ecl != "hzl" && 
+                    data.ecl != "oth") return "no";
+                
+                //check pid
+                if (data.pid.Length != 9 || 
+                    !data.pid.All(char.IsDigit)) return "no";
 
                 return "yes";
             }
 
-            public void clear()
-            {
-                this.passNo = 0;
-                this.byr = null;
-                this.iyr = null;
-                this.eyr = null;
-                this.hgt = null;
-                this.hcl = null;
-                this.ecl = null;
-                this.pid = null;
-                this.cid = null;
-            }
-
             public override string ToString()
             {
-                return $"PassNo({passNo}) byr:({byr} iyr:({iyr} eyr:({eyr}) hgt:({hgt}) hcl:({hcl}) ecl:({ecl}) pid:({pid}) cid:({cid})";
+                return $"byr:({data.byr} iyr:({data.iyr} eyr:({data.eyr}) hgt:({data.hgt}) hcl:({data.hcl}) ecl:({data.ecl}) pid:({data.pid}) cid:({data.cid})";
             }
         }
     }
