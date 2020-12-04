@@ -66,8 +66,8 @@ namespace Day04
             foreach (Passport passport in passports)
             {
                 //Console.WriteLine($"{passport}");
-                if (passport.isValid() == "yes") validpassportspart1++;
-                if (passport.isValid2() == "yes") validpassportspart2++;
+                if (passport.isValid()) validpassportspart1++;
+                if (passport.isValid2()) validpassportspart2++;
             }
 
             Console.WriteLine();
@@ -86,7 +86,7 @@ namespace Day04
                 this.data = p.data;                
             }
 
-            public string isValid() // check validity for part 1
+            public bool isValid() // check validity for part 1
             {
                 if (data.byr == null || 
                     data.iyr == null || 
@@ -94,12 +94,12 @@ namespace Day04
                     data.hgt == null || 
                     data.hcl == null || 
                     data.ecl == null || 
-                    data.pid == null) return "no";
+                    data.pid == null) return false;
 
-                return "yes";
+                return true;
             }
 
-            public string isValid2() // check validity for part 2
+            public bool isValid2() // check validity for part 2
             {
                 //check nulls
                 if (data.byr == null || 
@@ -108,31 +108,31 @@ namespace Day04
                     data.hgt == null || 
                     data.hcl == null || 
                     data.ecl == null || 
-                    data.pid == null) return "no";
+                    data.pid == null) return false;
 
                 //check byr, iyr, eyr
                 if (data.byr.Length != 4 || int.Parse(data.byr) < 1920 || int.Parse(data.byr) > 2002 ||
                     data.iyr.Length != 4 || int.Parse(data.iyr) < 2010 || int.Parse(data.iyr) > 2020 ||
-                    data.eyr.Length != 4 || int.Parse(data.eyr) < 2020 || int.Parse(data.eyr) > 2030) return "no";
+                    data.eyr.Length != 4 || int.Parse(data.eyr) < 2020 || int.Parse(data.eyr) > 2030) return false;
                 
                 //check hgt
                 if (data.hgt.EndsWith("cm"))
                 {
                     string[] height = data.hgt.Split('c');
-                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 150 || int.Parse(height[0]) > 193) return "no";
+                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 150 || int.Parse(height[0]) > 193) return false;
 
                 }
                 else if (data.hgt.EndsWith("in"))
                 {
                     string[] height = data.hgt.Split('i');
-                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 59 || int.Parse(height[0]) > 76) return "no";
+                    if (!height[0].All(char.IsDigit) || int.Parse(height[0]) < 59 || int.Parse(height[0]) > 76) return false;
                 }
-                else return "no";
+                else return false;
 
                 //check hcl
                 if (!data.hcl.StartsWith('#') || 
                     data.hcl[1..].Length != 6 || 
-                    !Regex.Match(data.hcl[1..], "^[a-f0-9]*$").Success) return "no";
+                    !Regex.Match(data.hcl[1..], "^[a-f0-9]*$").Success) return false;
 
                 //check ecl
                 if (data.ecl != "amb" && 
@@ -141,13 +141,13 @@ namespace Day04
                     data.ecl != "gry" && 
                     data.ecl != "grn" && 
                     data.ecl != "hzl" && 
-                    data.ecl != "oth") return "no";
+                    data.ecl != "oth") return false;
                 
                 //check pid
                 if (data.pid.Length != 9 || 
-                    !data.pid.All(char.IsDigit)) return "no";
+                    !data.pid.All(char.IsDigit)) return false;
 
-                return "yes";
+                return true;
             }
 
             public override string ToString()
