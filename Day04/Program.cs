@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 #nullable enable
 
-namespace Task002
+namespace Day04
 {
     class Program
     {
