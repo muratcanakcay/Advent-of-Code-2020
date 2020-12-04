@@ -102,13 +102,7 @@ namespace Day04
             public bool isValid2() // check validity for part 2
             {
                 //check nulls
-                if (data.byr == null || 
-                    data.iyr == null || 
-                    data.eyr == null || 
-                    data.hgt == null || 
-                    data.hcl == null || 
-                    data.ecl == null || 
-                    data.pid == null) return false;
+                if (!this.isValid()) return false;
 
                 //check byr, iyr, eyr
                 if (data.byr.Length != 4 || int.Parse(data.byr) < 1920 || int.Parse(data.byr) > 2002 ||
