@@ -1,7 +1,5 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]muratcanakcay 2*
-   0x0000|2020[Calendar][AoC++][Sponsors][Leaderboard][Stats]
-Our sponsors help make Advent of Code possible:
-Ximedes - From Kotlin in the cloud to embedded NodeJS, our software powers payments worldwide. Join us in the Netherlands or Serbia!
+https://adventofcode.com/2020/day/2
+
 --- Day 2: Password Philosophy ---
 Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
 
