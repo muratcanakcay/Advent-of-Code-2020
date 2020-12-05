@@ -20,7 +20,7 @@ namespace Day05
             {
                 for (int i = 0; i < 7; i++)
                 {
-                    ///Console.Write($"{line[i]}");
+                    //Console.Write($"{line[i]}");
                     if (line[i] == 'B') row += (int)Math.Pow(2, 6-i);
                 }
 
@@ -30,8 +30,7 @@ namespace Day05
                     if (line[i] == 'R') seat += (int)Math.Pow(2, 9-i);
                 }
 
-                //Console.Write($" Row: {row}, Seat: {seat} ID: {row * 8 + seat}");
-                //Console.WriteLine();
+                //Console.WriteLine($" Row: {row}, Seat: {seat} ID: {row * 8 + seat}");
 
                 ids.Add(row * 8 + seat);
                 row = 0;
