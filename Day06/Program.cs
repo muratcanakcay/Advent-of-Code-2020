@@ -37,14 +37,16 @@ namespace Day06
 
             data.Add(groupdata); // add last group;
 
-            // part 1
+            
             
             int sumanyone = 0;
+            int sumeveryone = 0;
 
-            foreach(var group in data)
+            foreach (var group in data)
             {
                 List<char> grouplist = new List<char>();
 
+                // part 1
                 // prepare group list using yes answers from everyone
 
                 foreach (var person in group)
@@ -54,28 +56,10 @@ namespace Day06
                 }
 
                 sumanyone += grouplist.Count(); // add number of yes answers to total
-            }
 
-            Console.WriteLine($"Total answers anyone answered yes to: {sumanyone}");
-
-            // part 2
-
-            int sumeveryone = 0;
-
-            foreach (var group in data)
-            {
-                // prepare group list using yes answers from everyone
-                
-                List<char> grouplist = new List<char>();
-
-                foreach (var person in group)
-                {
-                    foreach (var ch in person)
-                        if (!grouplist.Contains(ch)) grouplist.Add(ch);
-                }
-
+                // part 2
                 // remove answer from group list if someone has not answered yes
-                
+
                 List<char> copylist = new List<char>(grouplist);
 
                 foreach (var ch in grouplist)
@@ -92,6 +76,7 @@ namespace Day06
                 sumeveryone += copylist.Count(); // add number of yes answers to total
             }
 
+            Console.WriteLine($"Total answers anyone answered yes to: {sumanyone}");
             Console.WriteLine($"Total answers everyone answered yes to: {sumeveryone}");
         }
     }
