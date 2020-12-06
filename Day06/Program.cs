@@ -50,14 +50,10 @@ namespace Day06
                 foreach (var person in group)
                     foreach (var ch in person)
                         if (!grouplist.Contains(ch)) grouplist.Add(ch);
-                
-                subtotal = grouplist.Count(); // yes answers by anyone
 
-                sumanyone += subtotal; 
+                sumanyone += (subtotal = grouplist.Count()); // yes answers by anyone                
 
-                // part 2 - remove answer if someone has not answered yes
-
-                List<char> copylist = new List<char>(grouplist);
+                // part 2 - remove answer if someone has not answered yes                
 
                 foreach (var ch in grouplist)
                     foreach (var person in group)
@@ -67,7 +63,7 @@ namespace Day06
                             break; // move on to check if next answer was yes for everyone
                         }
                 
-                sumeveryone += subtotal;
+                sumeveryone += subtotal; // yes answers by everyone
             }
 
             Console.WriteLine($"Total answers anyone answered yes to: {sumanyone}");
