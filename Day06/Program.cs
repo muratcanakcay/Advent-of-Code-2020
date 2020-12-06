@@ -11,8 +11,8 @@ namespace Day06
             List < List < List<char> >> data = new List<List<List<char>>>();
 
             string[] lines = System.IO.File.ReadAllLines(@"C:\CodeBase\VS19\AdventOfCode2020\Day06\data.txt"); // ***** change this to the location of data.txt *****
-
-            // Part 1
+            
+            // get data from file
 
             List<List<char>> groupdata = new List<List<char>>();
 
@@ -37,6 +37,8 @@ namespace Day06
 
             data.Add(groupdata); // add last group;
                         
+            // solve the task
+            
             int sumanyone = 0;
             int sumeveryone = 0;
 
