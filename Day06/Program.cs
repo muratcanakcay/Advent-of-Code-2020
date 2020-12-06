@@ -6,28 +6,28 @@ namespace Day06
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string[] lines = System.IO.File.ReadAllLines(@"C:\CodeBase\VS19\AdventOfCode2020\Day06\data.txt"); // ***** change this to the location of data.txt *****
 
             // get data from file
 
-            List<List<List<char>>> data = new List<List<List<char>>>(); 
-            List<List<char>> groupdata = new List<List<char>>();
+            List<List<string>> data = new List<List<string>>(); 
+            List<string> groupdata = new List<string>();
 
             foreach (var line in lines)
             {
                 if (line == string.Empty)
                 {
                     data.Add(groupdata);
-                    groupdata = new List<List<char>>();
+                    groupdata = new List<string>();
                     continue;
                 }
 
-                List<char> persondata = new List<char>();
+                string persondata = "";
 
                 for (int i = 0; i < line.Length; i++)
-                    persondata.Add(line[i]);
+                    persondata += line[i];
                 
                 groupdata.Add(persondata);
             }
@@ -38,11 +38,10 @@ namespace Day06
             
             int sumanyone = 0;
             int sumeveryone = 0;
-            int subtotal = 0;
-
+            
             foreach (var group in data)
             {
-                subtotal = 0;
+                int subtotal = 0;
                 List<char> grouplist = new List<char>();
 
                 // part 1 - prepare group list using yes answers from anyone
