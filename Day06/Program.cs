@@ -36,9 +36,7 @@ namespace Day06
             }
 
             data.Add(groupdata); // add last group;
-
-            
-            
+                        
             int sumanyone = 0;
             int sumeveryone = 0;
 
