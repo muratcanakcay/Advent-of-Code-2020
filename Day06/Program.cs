@@ -42,19 +42,19 @@ namespace Day06
             foreach (var group in data)
             {
                 int subtotal = 0;
-                List<char> grouplist = new List<char>();
+                List<char> groupanswers = new List<char>();
 
                 // part 1 - prepare group list using yes answers from anyone
 
                 foreach (var person in group)
                     foreach (var ch in person)
-                        if (!grouplist.Contains(ch)) grouplist.Add(ch);
+                        if (!groupanswers.Contains(ch)) groupanswers.Add(ch);
 
-                sumanyone += (subtotal = grouplist.Count()); // yes answers by anyone                
+                sumanyone += (subtotal = groupanswers.Count()); // yes answers by anyone                
 
                 // part 2 - remove answer if someone has not answered yes                
 
-                foreach (var ch in grouplist)
+                foreach (var ch in groupanswers)
                     foreach (var person in group)
                         if (!person.Contains(ch))
                         {
