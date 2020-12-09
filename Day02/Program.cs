@@ -24,7 +24,7 @@ namespace Task002
 
             foreach (var line in data)
             {
-                int occurrence = line.Item4.Count(f => (f == (char)line.Item3));
+                int occurrence = line.Item4.Count(c => (c == (char)line.Item3));
 
                 if (occurrence >= line.Item1 && occurrence <= line.Item2)
                 {
