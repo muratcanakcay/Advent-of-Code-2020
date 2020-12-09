@@ -26,7 +26,7 @@ namespace Day09
             while (!found)
                 for (int i = 25; i < numbers.Length; i++)
                 {
-                    (found, number) = isValid(numbers[i], numbers[(i - 25)..(i)]);
+                    (found, number) = isNotValid(numbers[i], numbers[(i - 25)..(i)]);
                     if (found) break;                       
                 }
 
@@ -42,7 +42,7 @@ namespace Day09
             #endregion
         }
 
-        public static (bool, long) isValid(long number, long[] numbers)
+        public static (bool, long) isNotValid(long number, long[] numbers) // returns the not valid number as required in part 1
         {
             for (int i = 0; i < 24; i++)
             {
@@ -50,7 +50,7 @@ namespace Day09
                 {
                     if (number == numbers[i] + numbers[j])
                     {
-                        //Console.WriteLine($"{number}  is valid");
+                        //Console.WriteLine($"{number} is valid");
                         return (false, number);
                     }
                 }
@@ -59,8 +59,7 @@ namespace Day09
             return (true, number);
         }
 
-
-        public static long findRange(long number, long[] data)
+        public static long findRange(long number, long[] data) // returns max + min of the range as required in part 2
         {
             for (int i = 0; i < data.Length - 1; i++)
             {
