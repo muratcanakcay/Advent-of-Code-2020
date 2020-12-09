@@ -10,9 +10,9 @@ namespace Day07
         {
             string[] lines = System.IO.File.ReadAllLines(@"C:\CodeBase\VS19\AdventOfCode2020\Day07\data.txt");      // ***** change this to the location of data.txt *****
 
-            Dictionary<string, List<string>> data1 = new Dictionary<string, List<string>>();                        // data structure for part 1 ( {innerbag : {list of bags that can carry innerbag}) 
-            Dictionary<string, List<(int, string)>> data2 = new Dictionary<string, List<(int, string)>>();          // data structure for part 2 ( {outerbag : {list of (number, name) of bags outerbag must carry})
-            
+            SortedDictionary<string, SortedSet<string>> data1 = new SortedDictionary<string, SortedSet<string>>();                        // data structure for part 1 ( {innerbag : {list of bags that can carry innerbag}) 
+            SortedDictionary<string, SortedSet<(int, string)>> data2 = new SortedDictionary<string, SortedSet<(int, string)>>();          // data structure for part 2 ( {outerbag : {list of (number, name) of bags outerbag must carry})
+
             string mybag = "shiny gold";
             
             #region Part 1
@@ -30,13 +30,10 @@ namespace Day07
                 {
                     string innerbag = components[i] + ' ' + components[i + 1];
                     
-                    if (data1.ContainsKey(innerbag))
-                    {
-                        if (!data1[innerbag].Contains(outerbag)) data1[innerbag].Add(outerbag);
-                    }
+                    if (data1.ContainsKey(innerbag)) data1[innerbag].Add(outerbag);                    
                     else
                     {
-                        List<string> newbaglist = new List<string>();
+                        SortedSet<string> newbaglist = new SortedSet<string>();
                         newbaglist.Add(outerbag);
                         data1.Add(innerbag, newbaglist);
                         //Console.WriteLine($"{outerbag} added to outerbag list for {innerbag}.");
@@ -46,8 +43,8 @@ namespace Day07
 
             //solve the task            
             
-            List<string> possiblebags = new List<string>();
-            findbags1(mybag, ref possiblebags, in data1);
+            SortedSet<string> possiblebags = findbags1(mybag, in data1);
+
             #endregion
             
             #region Part 2
@@ -66,13 +63,10 @@ namespace Day07
                     int count = int.Parse(components[i]);
                     string innerbag = components[i+1] + ' ' + components[i + 2];
 
-                    if (data2.ContainsKey(outerbag))
-                    {
-                        if (!data2[outerbag].Contains((count, innerbag))) data2[outerbag].Add((count, innerbag));
-                    }
+                    if (data2.ContainsKey(outerbag)) data2[outerbag].Add((count, innerbag));
                     else
                     {
-                        List<(int,string)> newbaglist = new List<(int, string)>();
+                        SortedSet<(int,string)> newbaglist = new SortedSet<(int, string)>();
                         newbaglist.Add((count, innerbag));
                         data2.Add(outerbag, newbaglist);
                         //Console.WriteLine($"({count} {innerbag}) added to innerbag list for {outerbag}.");
@@ -88,19 +82,23 @@ namespace Day07
             Console.WriteLine($"Part 2: Total required bags: {requiredbags}");
         }
 
-        public static void findbags1(string bag, ref List<string> bagslist, in Dictionary<string, List<string>> data) // recursively populates the bagslist with all the bags that mybag can be carried in
+        public static SortedSet<string> findbags1(string bag, in SortedDictionary<string, SortedSet<string>> data) // recursively populates the bagslist with all the bags that mybag can be carried in
         {
+            SortedSet<string> bagSet = new SortedSet<string>();
+            
             if(data.ContainsKey(bag))
             {
                 foreach(var outerbag in data[bag])
                 {
-                    if(!bagslist.Contains(outerbag)) bagslist.Add(outerbag); // add outerbag to bagslist if it's not in the list
-                    findbags1(outerbag, ref bagslist, in data); // find the bags that outerbag can be carried in
+                    bagSet.Add(outerbag); // add outerbag to bagslist
+                    bagSet.UnionWith(findbags1(outerbag, in data)); // find the bags that outerbag can be carried in
                 }
             }
+
+            return bagSet;
         }
 
-        public static int findbags2(string bag, in Dictionary<string, List<(int, string)>> data) // recursively counts all bags that mybag must contain 
+        public static int findbags2(string bag, in SortedDictionary<string, SortedSet<(int, string)>> data) // recursively counts all bags that mybag must contain 
         {
             int requiredbags = 1;
             
